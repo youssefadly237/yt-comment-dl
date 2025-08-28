@@ -1,4 +1,8 @@
-from downloader import search_dict
+from yt_comment_dl.parser import YouTubeParser
+
+# Create a parser instance for testing
+parser = YouTubeParser()
+search_dict = parser.search_dict
 
 
 def test_that_nothing_is_yielded_from_empty_dict():
@@ -15,16 +19,13 @@ def test_that_correct_value_is_yielded_when_dictionary_is_inside_list():
 
 def test_that_two_values_are_yielded_if_key_is_found_twice_in_nested_dictionaries():
     assert (
-        list(search_dict([{"test": "expected"}, {"test": "expected"}], "test"))
-        == ["expected"] * 2
+        list(search_dict([{"test": "expected"}, {"test": "expected"}], "test")) == ["expected"] * 2
     )
 
 
 def test_that_expected_value_is_yielded_when_nesting_dictionaries():
     assert (
-        list(
-            search_dict({"a": {"test": "expected"}, "b": {"test": "expected"}}, "test")
-        )
+        list(search_dict({"a": {"test": "expected"}, "b": {"test": "expected"}}, "test"))
         == ["expected"] * 2
     )
 

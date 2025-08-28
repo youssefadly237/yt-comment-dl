@@ -8,13 +8,19 @@ authors = [
   { name = "Jo. Adly", email = "youssefadly237@gmail.com" },
 ]
 requires-python = ">=3.10"
-dependencies = ["dateparser>=1.2.2", "requests>=2.32.5"]
+dependencies = [
+    "dateparser>=1.2.2",
+    "requests>=2.32.5",
+]
 
 license = { file = "LICENSE" }
+
+keywords = ["youtube", "comments", "scraper", "downloader", "api-free"]
 
 classifiers = [
   "License :: OSI Approved :: MIT License",
   "Environment :: Console",
+  "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
@@ -22,16 +28,44 @@ classifiers = [
 ]
 
 [project.scripts]
-yt-comment-dl = "yt_comment_dl:main"
+yt-comment-dl = "yt_comment_dl.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/youssefadly237/yt-comment-dl"
-Source = "https://github.com/youssefadly237/yt-comment-dl"
+Repository = "https://github.com/youssefadly237/yt-comment-dl"
 Issues = "https://github.com/youssefadly237/yt-comment-dl/issues"
+Changelog = "https://github.com/youssefadly237/yt-comment-dl/releases"
 
 [build-system]
 requires = ["uv_build>=0.8.11,<0.9.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
-dev = ["pylint>=3.3.8", "pytest>=8.4.1", "pytest-benchmark>=5.1.0"]
+dev = [
+    "black>=25.1.0",
+    "pre-commit>=4.3.0",
+    "pylint>=3.3.8",
+    "pytest>=8.4.1",
+    "pytest-benchmark>=5.1.0",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+[tool.pylint.messages_control]
+disable = [
+    "too-few-public-methods",
+    "missing-docstring",
+    "line-too-long",
+    "too-many-instance-attributes",
+        "too-many-arguments",
+    "too-many-positional-arguments",
+    "too-many-locals"
+
+]
+
+[tool.pylint.format]
+max-args = 10
+max-locals = 25
+max-line-length = 100

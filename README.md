@@ -1,60 +1,104 @@
-# youtube-comment-downloader
-Simple script for downloading Youtube comments without using the Youtube API. The output is in line delimited JSON.
+# yt-comment-dl
 
-### Installation
+Simple script for downloading YouTube comments without using the YouTube API. The output is in JSON format.
+
+**This is a maintained fork of [egbertbouman/youtube-comment-downloader](https://github.com/egbertbouman/youtube-comment-downloader).**
+
+## Installation
 
 Preferably inside a [python virtual environment](https://virtualenv.pypa.io/en/latest/) install this package via:
 
-```
-pip install youtube-comment-downloader
+```bash
+pip install yt-comment-dl
 ```
 
 Or directly from the GitHub repository:
 
-```
-pip install https://github.com/egbertbouman/youtube-comment-downloader/archive/master.zip
-```
-
-### Usage as command-line interface
-```
-$ youtube-comment-downloader --help
-usage: youtube-comment-downloader [--help] [--youtubeid YOUTUBEID] [--url URL] [--output OUTPUT] [--limit LIMIT] [--language LANGUAGE] [--sort SORT]
-
-Download Youtube comments without using the Youtube API
-
-optional arguments:
-  --help, -h                             Show this help message and exit
-  --youtubeid YOUTUBEID, -y YOUTUBEID    ID of Youtube video for which to download the comments
-  --url URL, -u URL                      Youtube URL for which to download the comments
-  --output OUTPUT, -o OUTPUT             Output filename (output format is line delimited JSON)
-  --pretty, -p                           Change the output format to indented JSON
-  --limit LIMIT, -l LIMIT                Limit the number of comments
-  --language LANGUAGE, -a LANGUAGE       Language for Youtube generated text (e.g. en)
-  --sort SORT, -s SORT                   Whether to download popular (0) or recent comments (1). Defaults to 1
+```bash
+pip install git+https://github.com/youssefadly237/yt-comment-dl.git
 ```
 
-For example:
-```
-youtube-comment-downloader --url https://www.youtube.com/watch?v=ScMzIvxBSi4 --output ScMzIvxBSi4.json
-```
-or using the Youtube ID:
-```
-youtube-comment-downloader --youtubeid ScMzIvxBSi4 --output ScMzIvxBSi4.json
+## Usage as command-line interface
+
+```bash
+$ yt-comment-dl --help
+usage: yt-comment-dl [-h] [--output OUTPUT] [--pretty] [--limit LIMIT] [--language LANGUAGE] [--sort {0,1}] url
+
+Download YouTube comments without using the YouTube API
+
+positional arguments:
+  url                                    YouTube video URL or video ID
+
+options:
+  -h, --help                             Show this help message and exit
+  --output OUTPUT, -o OUTPUT             Output filename (default: comments_<video_id>.json)
+  --pretty, -p                           Pretty-print JSON output
+  --limit LIMIT, -l LIMIT                Maximum number of comments to download
+  --language LANGUAGE, -a LANGUAGE       Language for YouTube generated text (e.g. en)
+  --sort {0,1}, -s {0,1}                 Sort by: 0=popular, 1=recent (default: 1)
 ```
 
-For Youtube IDs starting with - (dash) you will need to run the script with:
-`-y=idwithdash` or `--youtubeid=idwithdash`
+## Examples
 
+Download comments using a YouTube URL:
 
-### Usage as library
-You can also use this script as a library. For instance, if you want to print out the 10 most popular comments for a particular Youtube video you can do the following:
+```bash
+yt-comment-dl "https://www.youtube.com/watch?v=ScMzIvxBSi4" --output ScMzIvxBSi4.json
+```
 
+Download comments using just the video ID:
+
+```bash
+yt-comment-dl ScMzIvxBSi4 --output ScMzIvxBSi4.json
+```
+
+Download the 50 most popular comments with pretty formatting:
+
+```bash
+yt-comment-dl ScMzIvxBSi4 --sort 0 --limit 50 --pretty
+```
+
+For YouTube IDs starting with `-` (dash), you may need to use quotes:
+
+```bash
+yt-comment-dl "-idwithdash"
+```
+
+## Usage as library
+
+You can also use this script as a library. For instance, if you want to print out the 10 most popular comments for a particular YouTube video you can do the following:
 
 ```python
 from itertools import islice
-from youtube_comment_downloader import *
+from yt_comment_dl import YoutubeCommentDownloader
+
 downloader = YoutubeCommentDownloader()
-comments = downloader.get_comments_from_url('https://www.youtube.com/watch?v=ScMzIvxBSi4', sort_by=SORT_BY_POPULAR)
+comments = downloader.get_comments('ScMzIvxBSi4', sort_by=0)  # 0 = popular
 for comment in islice(comments, 10):
-    print(comment)
+    print(comment.to_dict())
 ```
+
+## Output format
+
+The output is a JSON array containing comment objects. Each comment has the following structure:
+
+```json
+[
+  {
+    "cid": "comment_id",
+    "text": "Comment text",
+    "time": "2 hours ago",
+    "author": "Author Name",
+    "channel": "author_channel_id",
+    "votes": 42,
+    "photo": "author_profile_photo_url",
+    "heart": false,
+    "reply": false,
+    "time_parsed": 1234567890
+  }
+]
+```
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details
