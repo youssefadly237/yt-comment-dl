@@ -1,3 +1,37 @@
+[project]
+name = "yt-comment-dl"
+version = "0.1.0"
+description = "Simple script for downloading Youtube comments without using the Youtube API"
+readme = "README.md"
+authors = [
+  { name = "egbertbouman", email = "ebouman@gmail.com" },
+  { name = "Jo. Adly", email = "youssefadly237@gmail.com" },
+]
+requires-python = ">=3.10"
+dependencies = ["dateparser>=1.2.2", "requests>=2.32.5"]
+
+license = { file = "LICENSE" }
+
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Environment :: Console",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+
+[project.scripts]
+yt-comment-dl = "yt_comment_dl:main"
+
+[project.urls]
+Homepage = "https://github.com/youssefadly237/yt-comment-dl"
+Source = "https://github.com/youssefadly237/yt-comment-dl"
+Issues = "https://github.com/youssefadly237/yt-comment-dl/issues"
+
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.8.11,<0.9.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = ["pylint>=3.3.8", "pytest>=8.4.1", "pytest-benchmark>=5.1.0"]

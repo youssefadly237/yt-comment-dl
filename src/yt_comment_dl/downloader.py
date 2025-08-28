@@ -1,4 +1,6 @@
+
 from __future__ import print_function
+from .downloader import search_dict
 
 import json
 import re
@@ -92,9 +94,9 @@ class YoutubeCommentDownloader:
         else:
             data = None  # or handle this case as needed
 
-        item_section = next(self.search_dict(data, "itemSectionRenderer"), None)
+    item_section = next(search_dict(data, "itemSectionRenderer"), None)
         renderer = (
-            next(self.search_dict(item_section, "continuationItemRenderer"), None)
+            next(search_dict(item_section, "continuationItemRenderer"), None)
             if item_section
             else None
         )
@@ -102,21 +104,21 @@ class YoutubeCommentDownloader:
             # Comments disabled?
             return
 
-        sort_menu = next(self.search_dict(data, "sortFilterSubMenuRenderer"), {}).get(
+    sort_menu = next(search_dict(data, "sortFilterSubMenuRenderer"), {}).get(
             "subMenuItems", []
         )
         if not sort_menu:
             # No sort menu. Maybe this is a request for community posts?
-            section_list = next(self.search_dict(data, "sectionListRenderer"), {})
-            continuations = list(self.search_dict(section_list, "continuationEndpoint"))
+            section_list = next(search_dict(data, "sectionListRenderer"), {})
+            continuations = list(search_dict(section_list, "continuationEndpoint"))
             # Retry..
             data = self.ajax_request(continuations[0], ytcfg) if continuations else {}
             sort_menu = next(
-                self.search_dict(data, "sortFilterSubMenuRenderer"), {}
+                search_dict(data, "sortFilterSubMenuRenderer"), {}
             ).get("subMenuItems", [])
         if not sort_menu or sort_by >= len(sort_menu):
             raise RuntimeError("Failed to set sorting")
-        continuations = [sort_menu[sort_by]["serviceEndpoint"]]
+    continuations = [sort_menu[sort_by]["serviceEndpoint"]]
 
         while continuations:
             continuation = continuations.pop()
@@ -125,13 +127,13 @@ class YoutubeCommentDownloader:
             if not response:
                 break
 
-            error = next(self.search_dict(response, "externalErrorMessage"), None)
+            error = next(search_dict(response, "externalErrorMessage"), None)
             if error:
                 raise RuntimeError("Error returned from server: " + error)
 
             actions = list(
-                self.search_dict(response, "reloadContinuationItemsCommand")
-            ) + list(self.search_dict(response, "appendContinuationItemsAction"))
+                search_dict(response, "reloadContinuationItemsCommand")
+            ) + list(search_dict(response, "appendContinuationItemsAction"))
             for action in actions:
                 for item in action.get("continuationItems", []):
                     if action["targetId"] in [
@@ -141,7 +143,7 @@ class YoutubeCommentDownloader:
                     ]:
                         # Process continuations for comments and replies.
                         continuations[:0] = [
-                            ep for ep in self.search_dict(item, "continuationEndpoint")
+                            ep for ep in search_dict(item, "continuationEndpoint")
                         ]
                     if (
                         action["targetId"].startswith("comment-replies-item")
@@ -149,12 +151,12 @@ class YoutubeCommentDownloader:
                     ):
                         # Process the 'Show more replies' button
                         continuations.append(
-                            next(self.search_dict(item, "buttonRenderer"))["command"]
+                            next(search_dict(item, "buttonRenderer"))["command"]
                         )
 
-            surface_payloads = self.search_dict(response, "commentSurfaceEntityPayload")
+            surface_payloads = search_dict(response, "commentSurfaceEntityPayload")
             payments = {
-                payload["key"]: next(self.search_dict(payload, "simpleText"), "")
+                payload["key"]: next(search_dict(payload, "simpleText"), "")
                 for payload in surface_payloads
                 if "pdgCommentChip" in payload
             }
@@ -162,7 +164,7 @@ class YoutubeCommentDownloader:
                 # We need to map the payload keys to the comment IDs.
                 view_models = [
                     vm["commentViewModel"]
-                    for vm in self.search_dict(response, "commentViewModel")
+                    for vm in search_dict(response, "commentViewModel")
                 ]
                 surface_keys = {
                     vm["commentSurfaceKey"]: vm["commentId"]
@@ -175,12 +177,12 @@ class YoutubeCommentDownloader:
                     if key in surface_keys
                 }
 
-            toolbar_payloads = self.search_dict(
+            toolbar_payloads = search_dict(
                 response, "engagementToolbarStateEntityPayload"
             )
             toolbar_states = {payload["key"]: payload for payload in toolbar_payloads}
             for comment in reversed(
-                list(self.search_dict(response, "commentEntityPayload"))
+                list(search_dict(response, "commentEntityPayload"))
             ):
                 properties = comment["properties"]
                 cid = properties["commentId"]
@@ -219,16 +221,21 @@ class YoutubeCommentDownloader:
         match = re.search(pattern, text)
         return match.group(group) if match else default
 
-    @staticmethod
-    def search_dict(partial, search_key):
-        stack = [partial]
-        while stack:
-            current_item = stack.pop()
-            if isinstance(current_item, dict):
-                for key, value in current_item.items():
-                    if key == search_key:
-                        yield value
-                    else:
-                        stack.append(value)
-            elif isinstance(current_item, list):
-                stack.extend(current_item)
+
+def search_dict(partial, search_key):
+    stack = [partial]
+    while stack:
+        current_item = stack.pop()
+        if isinstance(current_item, dict):
+            for key, value in current_item.items():
+                if key == search_key:
+                    yield value
+                else:
+                    stack.append(value)
+        elif isinstance(current_item, list):
+            stack.extend(current_item)
+
+__all__ = [
+    "search_dict",
+    # ...other exports if needed
+]
