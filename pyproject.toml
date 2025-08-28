@@ -62,7 +62,6 @@ disable = [
         "too-many-arguments",
     "too-many-positional-arguments",
     "too-many-locals"
-
 ]
 
 [tool.pylint.format]

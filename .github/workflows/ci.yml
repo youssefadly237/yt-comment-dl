@@ -10,7 +10,9 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.x"
-      - name: Install dependencies
+      - name: Install project dependencies
+        run: pip install .
+      - name: Install dev tools
         run: pip install black pylint
       - name: Format check
         run: black --check .
