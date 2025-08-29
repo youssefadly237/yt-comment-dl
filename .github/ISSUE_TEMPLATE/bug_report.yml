@@ -1,33 +1,34 @@
+---
 name: Bug Report
 description: Report a bug
 body:
-  - type: textarea
-    attributes:
-      label: Bug Description
-      description: What happened?
-      placeholder: Describe the bug clearly
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Steps to Reproduce
-      description: How to reproduce this bug?
-      placeholder: |
-        1. Run command...
-        2. See error...
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Expected Behavior
-      description: What should have happened?
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: System Info
-      description: OS, Python version, etc.
-      placeholder: |
-        - OS: Ubuntu 22.04
-        - Python: 3.10.18
-        - Version: 1.0.0
+    - type: textarea
+      attributes:
+          label: Bug Description
+          description: What happened?
+          placeholder: Describe the bug clearly
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: Steps to Reproduce
+          description: How to reproduce this bug?
+          placeholder: |
+              1. Run command...
+              2. See error...
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: Expected Behavior
+          description: What should have happened?
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: System Info
+          description: OS, Python version, etc.
+          placeholder: |
+              - OS: Ubuntu 22.04
+              - Python: 3.10.18
+              - Version: 1.0.0

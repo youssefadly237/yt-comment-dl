@@ -1,20 +1,21 @@
+---
 name: CI
 
 on: [push, pull_request]
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
-      - name: Install project dependencies
-        run: pip install .
-      - name: Install dev tools
-        run: pip install black pylint
-      - name: Format check
-        run: black --check .
-      - name: Lint
-        run: pylint src/
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-python@v4
+              with:
+                  python-version: 3.x
+            - name: Install project dependencies
+              run: pip install .
+            - name: Install dev tools
+              run: pip install black pylint
+            - name: Format check
+              run: black --check .
+            - name: Lint
+              run: pylint src/

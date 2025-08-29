@@ -1,22 +1,32 @@
+[build-system]
+requires = ["uv_build>=0.8.11,<0.9.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+  "black>=25.1.0",
+  "pre-commit>=4.3.0",
+  "pylint>=3.3.8",
+  "pytest>=8.4.1",
+  "pytest-benchmark>=5.1.0"
+]
+
 [project]
 name = "yt-comment-dl"
 version = "0.1.0"
 description = "Simple script for downloading Youtube comments without using the Youtube API"
 readme = "README.md"
 authors = [
-  { name = "egbertbouman", email = "ebouman@gmail.com" },
-  { name = "Jo. Adly", email = "youssefadly237@gmail.com" },
+  {name = "egbertbouman", email = "ebouman@gmail.com"},
+  {name = "Jo. Adly", email = "youssefadly237@gmail.com"}
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "dateparser>=1.2.2",
-    "requests>=2.32.5",
+  "dateparser>=1.2.2",
+  "requests>=2.32.5"
 ]
-
-license = { file = "LICENSE" }
-
+license = {file = "LICENSE"}
 keywords = ["youtube", "comments", "scraper", "downloader", "api-free"]
-
 classifiers = [
   "License :: OSI Approved :: MIT License",
   "Environment :: Console",
@@ -24,7 +34,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.12"
 ]
 
 [project.scripts]
@@ -36,35 +46,22 @@ Repository = "https://github.com/youssefadly237/yt-comment-dl"
 Issues = "https://github.com/youssefadly237/yt-comment-dl/issues"
 Changelog = "https://github.com/youssefadly237/yt-comment-dl/releases"
 
-[build-system]
-requires = ["uv_build>=0.8.11,<0.9.0"]
-build-backend = "uv_build"
-
-[dependency-groups]
-dev = [
-    "black>=25.1.0",
-    "pre-commit>=4.3.0",
-    "pylint>=3.3.8",
-    "pytest>=8.4.1",
-    "pytest-benchmark>=5.1.0",
-]
-
 [tool.black]
 line-length = 100
 target-version = ['py310']
-
-[tool.pylint.messages_control]
-disable = [
-    "too-few-public-methods",
-    "missing-docstring",
-    "line-too-long",
-    "too-many-instance-attributes",
-        "too-many-arguments",
-    "too-many-positional-arguments",
-    "too-many-locals"
-]
 
 [tool.pylint.format]
 max-args = 10
 max-locals = 25
 max-line-length = 100
+
+[tool.pylint.messages_control]
+disable = [
+  "too-few-public-methods",
+  "missing-docstring",
+  "line-too-long",
+  "too-many-instance-attributes",
+  "too-many-arguments",
+  "too-many-positional-arguments",
+  "too-many-locals"
+]
