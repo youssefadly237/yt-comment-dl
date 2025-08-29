@@ -2,7 +2,9 @@
 
 Simple script for downloading YouTube comments without using the YouTube API. The output is in JSON format.
 
-**This is a maintained fork of [egbertbouman/youtube-comment-downloader](https://github.com/egbertbouman/youtube-comment-downloader).**
+**Note:** This project follows a different philosophy from the original.  
+- The original ([youtube-comment-downloader](https://github.com/egbertbouman/youtube-comment-downloader)) is intentionally minimal and will be fixed if it breaks.  
+- This fork (`yt-comment-dl`) focuses on maintainability, and modern tooling, while preserving the same core functionality.  
 
 ## Installation
 
