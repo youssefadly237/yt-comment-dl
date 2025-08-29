@@ -1,14 +1,21 @@
 # yt-comment-dl
 
-Simple script for downloading YouTube comments without using the YouTube API. The output is in JSON format.
+Simple script for downloading YouTube comments without using the YouTube API.
+The output is in JSON format.
 
-**Note:** This project follows a different philosophy from the original.  
-- The original ([youtube-comment-downloader](https://github.com/egbertbouman/youtube-comment-downloader)) is intentionally minimal and will be fixed if it breaks.  
-- This fork (`yt-comment-dl`) focuses on maintainability, and modern tooling, while preserving the same core functionality.  
+**Note:** This project follows a different philosophy from the original.
+
+- The original
+  ([youtube-comment-downloader](https://github.com/egbertbouman/youtube-comment-downloader))
+  is intentionally minimal and will be fixed if it breaks.
+- This fork (`yt-comment-dl`) focuses on maintainability, and modern tooling,
+  while preserving the same core functionality.
 
 ## Installation
 
-Preferably inside a [python virtual environment](https://virtualenv.pypa.io/en/latest/) install this package via:
+Preferably inside and
+[python virtual environment](https://virtualenv.pypa.io/en/latest/)
+install this package via:
 
 ```bash
 pip install yt-comment-dl
@@ -24,7 +31,8 @@ pip install git+https://github.com/youssefadly237/yt-comment-dl.git
 
 ```bash
 $ yt-comment-dl --help
-usage: yt-comment-dl [-h] [--output OUTPUT] [--pretty] [--limit LIMIT] [--language LANGUAGE] [--sort {0,1}] url
+usage: yt-comment-dl [-h] [--output OUTPUT] [--pretty] [--limit LIMIT]
+[--language LANGUAGE] [--sort {0,1}] url
 
 Download YouTube comments without using the YouTube API
 
@@ -36,7 +44,7 @@ options:
   --output OUTPUT, -o OUTPUT             Output filename (default: comments_<video_id>.json)
   --pretty, -p                           Pretty-print JSON output
   --limit LIMIT, -l LIMIT                Maximum number of comments to download
-  --language LANGUAGE, -a LANGUAGE       Language for YouTube generated text (e.g. en)
+  --language LANGUAGE, -a LANGUAGE       YouTube generated text language (en)
   --sort {0,1}, -s {0,1}                 Sort by: 0=popular, 1=recent (default: 1)
 ```
 
@@ -68,7 +76,9 @@ yt-comment-dl "-idwithdash"
 
 ## Usage as library
 
-You can also use this script as a library. For instance, if you want to print out the 10 most popular comments for a particular YouTube video you can do the following:
+You can also use this script as a library. For instance, if you want to
+print out the 10 most popular comments for a particular YouTube video
+you can do the following:
 
 ```python
 from itertools import islice
@@ -82,7 +92,8 @@ for comment in islice(comments, 10):
 
 ## Output format
 
-The output is a JSON array containing comment objects. Each comment has the following structure:
+The output is a JSON array containing comment objects.
+Each comment has the following structure:
 
 ```json
 [
